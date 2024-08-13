@@ -13,11 +13,15 @@ class BusinessOwner extends Model
         'name',
         'email',
         'password',
-        'company_name',
-        'business_type',
+        'company_name'
     ];
 
     protected $hidden = [
         'password',
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'business_owner_id');
+    }
 }

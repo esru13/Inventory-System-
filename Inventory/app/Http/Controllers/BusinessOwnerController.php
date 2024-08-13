@@ -13,16 +13,14 @@ class BusinessOwnerController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:business_owners',
             'password' => 'required|string|min:8|confirmed',
-            'company_name' => 'required|string|max:255',
-            'business_type' => 'required|string|max:255',
+            'company_name' => 'required|string|max:255'
         ]);
 
         $businessOwner = BusinessOwner::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'company_name' => $request->company_name,
-            'business_type' => $request->business_type,
+            'company_name' => $request->company_name
         ]);
 
         $token = $businessOwner->createToken('auth-token')->plainTextToken;
@@ -48,5 +46,11 @@ class BusinessOwnerController extends Controller
         $token = $businessOwner->createToken('auth-token')->plainTextToken;
 
         return response()->json(['token' => $token]);
+    }
+    public function logout(Request $request){   
+
+        $request->user()->currentAcessToken()->delete();
+
+        return response()->json(['message'=>'Logged out sucessfully']);
     }
 }

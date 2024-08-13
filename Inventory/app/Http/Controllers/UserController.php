@@ -9,6 +9,11 @@ use App\Models\User;
 
 class UserController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:sanctum');
+    // }
+
     public function register(Request $request)
     {
         $request->validate([
@@ -46,5 +51,12 @@ class UserController extends Controller
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json(['token' => $token]);
+    }
+
+    public function logout(Request $request){   
+
+        $request->user()->currentAcessToken()->delete();
+
+        return response()->json(['message'=>'Logged out sucessfully']);
     }
 }
