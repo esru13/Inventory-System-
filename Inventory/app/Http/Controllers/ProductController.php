@@ -71,7 +71,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
        
-
         try{ 
             
             $product = Product::findOrFail($id);
