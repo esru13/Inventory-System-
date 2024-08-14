@@ -49,7 +49,7 @@ class BusinessOwnerController extends Controller
     }
     public function logout(Request $request){   
 
-        $request->user()->currentAcessToken()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message'=>'Logged out sucessfully']);
     }
