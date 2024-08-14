@@ -11,7 +11,8 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        // Ensure the user is authenticated and is a business owner
+        return auth()->check() && auth()->user() instanceof \App\Models\BusinessOwner;
     }
 
     /**
@@ -25,7 +26,8 @@ class StoreProductRequest extends FormRequest
             'name'=>'required|string|max:255|',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'stock_quantity' => 'required|integer'
+            'stock_quantity' => 'required|integer',
+            'category_id' => 'required|exists:categories,id',
         ];
     }
 }

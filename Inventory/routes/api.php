@@ -4,7 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BusinessOwnerController;   
-use App\Http\Controllers\ProductController;   
+use App\Http\Controllers\ProductController;  
+use App\Http\Controllers\CategoryController; 
+use App\Http\Controllers\OrderController; 
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,6 +31,7 @@ Route::post('/business-owner/register', [BusinessOwnerController::class, 'regist
 Route::post('/business-owner/login', [BusinessOwnerController::class, 'login']);
 
 Route::get('/products',[ProductController::class ,'index']);
+Route::get('/categories',[CategoryController::class ,'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/logout',[UserController::class, 'logout']);
@@ -37,4 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/product/{id}', [ProductController::class, 'show']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'destroy']);
+    Route::post('/category/store',[CategoryController::class, 'store']);
+    Route::get('/category/{id}', [CategoryController::class, 'show']);
+    Route::put('/category/{id}', [CategoryController::class, 'update']);
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
+    Route::post('/order', [OrderController::class, 'placeOrder']);
 });
