@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController; 
 use App\Http\Controllers\OrderController; 
 Route::get('/', function () {
-    return view('profile');
+    return view('index');
 });
 Route::get('/user/register', function() {
     return view('register');
