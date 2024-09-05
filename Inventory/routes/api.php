@@ -7,16 +7,7 @@ use App\Http\Controllers\BusinessOwnerController;
 use App\Http\Controllers\ProductController;  
 use App\Http\Controllers\CategoryController; 
 use App\Http\Controllers\OrderController; 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+
 Route::get('/', function() {
     return response()->json('Welcome to Inventory System');
 });
@@ -33,6 +24,7 @@ Route::post('/business-owner/login', [BusinessOwnerController::class, 'login']);
 Route::get('/products',[ProductController::class ,'index']);
 Route::get('/categories',[CategoryController::class ,'index']);
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/user/logout',[UserController::class, 'logout']);
     Route::post('/business-owner/logout',[BusinessOwnerController::class, 'logout']);
@@ -44,5 +36,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/category/{id}', [CategoryController::class, 'show']);
     Route::put('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'destroy']);
-    Route::post('/order', [OrderController::class, 'placeOrder']);
+    Route::post('/order', [OrderController::class, 'store']);
 });
