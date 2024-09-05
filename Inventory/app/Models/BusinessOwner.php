@@ -24,4 +24,13 @@ class BusinessOwner extends Model
     {
         return $this->hasMany(Product::class, 'business_owner_id');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function businessOwner()
+    {
+        return $this->hasOne(BusinessOwner::class);
+    }
+
 }

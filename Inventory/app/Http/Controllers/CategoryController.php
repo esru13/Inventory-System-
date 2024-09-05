@@ -7,18 +7,25 @@ use App\Models\Category;
 use App\Http\Resources\CategoryResource;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Requests\StoreCategoryRequest;
+use App\Models\BusinessOwner;
 
 class CategoryController extends Controller
 {
     public function store(StoreCategoryRequest $request){
 
         {
-            // $user = auth()->user();
+            $user = auth()->user();
+
+            $businessOwner = BusinessOwner::where('id', $user->id)->first();
+        
+            if (!$businessOwner) {
+                return response()->json(['message' => 'Only business owners can post categories.'], 403);
+            }
             try {
                 $category = Category::create([
                     'name' => $request->name,
                 ]);
-                \Log::info('Prodcategoryuct created successfully', ['category' => $category]);
+                \Log::info('Product category created successfully', ['category' => $category]);
                 return new CategoryResource($category);
             } catch (\Exception $e) {
                 \Log::error('Error creating category', ['error' => $e->getMessage()]);
@@ -34,6 +41,7 @@ class CategoryController extends Controller
 
     public function show($id)
     {
+        
         try{
             $category = Category::findOrFail($id);
             return new CategoryResource($category);
@@ -47,22 +55,34 @@ class CategoryController extends Controller
 
     public function update(UpdateCategoryRequest $request, $id)
     {
-        $category = Category::findOrFail($id);
-        $category->update([
-            'name' => $request->name,
-        ]);
+        {
+            $user = auth()->user();
 
-        return new CategoryResource($category);
+            $businessOwner = BusinessOwner::where('id', $user->id)->first();
+        
+            if (!$businessOwner) {
+                return response()->json(['message' => 'Only business owners can post categories.'], 403);
+            }
+            try{
+                $category = Category::findOrFail($id);
+                $category->update([
+                    'name' => $request->name,
+                ]);
+                return new CategoryResource($category);
+            } catch (\Exception $e) {
+                \Log::error('Error updating category', ['error' => $e->getMessage()]);
+                return response()->json(['message' => 'Error updating category', 'error' => $e->getMessage()], 500);
+            }
     }
-
+    }
     public function destroy($id)
     { 
         try{ 
 
             $category = Category::findOrFail($id);
-            // if ($category->business_owner_id !== auth()->user()->id) {
-            // return response()->json(['message' => 'Unauthorized: Not your product'], 403);
-            // }
+            if ($category->business_owner_id !== auth()->user()->id) {
+            return response()->json(['message' => 'Unauthorized: Not your product'], 403);
+            }
             $category->delete();
 
             return response()->json(['message' => 'Product deleted successfully']);
